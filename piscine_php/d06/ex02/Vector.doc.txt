@@ -1,0 +1,20 @@
+<- Vector ----------------------------------------------------------------------
+The Vector class handle direction vector.
+
+An instance can be contructed like the following:
+new Vector ( array('dest' => new Vertex(..), 'orig' => new Vertex(..)) )
+Where dest is the destination point, and orig the origin.
+'dest' is mandatory, if not provided the program will exit.
+
+The class provides getter for each x, y, z and w coordinates, plus the
+following methodes:
+float magnitude()
+Vector normalize()
+Vector add(Vector $rhs)
+Vector sub(Vector $rhs)
+Vector opposite()
+Vector scalarProduct($k)
+float dotProduct(Vector $rhs)
+float cos(Vector $rhs)
+Vector crossProduct(Vector $rhs)
+---------------------------------------------------------------------- Vector ->

@@ -1,0 +1,21 @@
+<- Matrix ----------------------------------------------------------------------
+The Matrix class handle matrix.
+
+An instance can be constructed by first giving the matrix type using
+the class const with the key preset:
+Matrix::IDENTITY
+Matrix::SCALE must give 'scale' key factor
+Matrix::RX must give 'angle' key in degree
+Matrix::RY must give 'angle' key in degree
+Matrix::RZ must give 'angle' key in degree
+Matrix::TRANSLATION must give 'vtc' key vector
+Matrix::PROJECTION must give 'fov' 'ratio' 'near' and 'far' keys factors
+
+exemples:
+new Matrix( array('preset' => Matrix::SCALE, 'scale' => 2) );
+new Matrix( array('preset' => Matrix::RX, 'angle' => 20) );
+
+The class provides the following methods:
+Matrix mult(Matrix $rhs)
+Vertex transformVertex(Vertex $vtx)
+---------------------------------------------------------------------- Matrix ->

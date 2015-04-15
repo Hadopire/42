@@ -1,0 +1,24 @@
+<- Vertex  ------------------------------------------------------------------------------------------------------
+The Vertex class handles vertex.
+
+An instance can be contructed like this:
+new Vertex( array( 'x' => 5, 'y' => 10, 'z' => 10, 'w' => 1, 'color' => new Color( array('rgb' => 0xffffff) ) ) );
+Where 'x', 'y' and 'z' are mandatory, and 'color' an instance of the class Color.
+
+If 'x', 'y' or 'z' are not provided, the program will exit.
+If 'color' is not an instance of the class Color, the behaviour is undefined.
+The default value of 'w' is 1.0.
+The default value of 'color' is 0xFFFFFF (white).
+
+Methods:
+getX()
+getY()
+getZ()
+getW()
+getColor()
+setX(int $x)
+setY(int $y)
+setZ(int $z)
+setW(int $w)
+setColor(Color $color)
+-------------------------------------------------------------------------------------------------------- Vertex ->
