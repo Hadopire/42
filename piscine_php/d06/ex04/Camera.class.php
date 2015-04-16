@@ -4,7 +4,7 @@ require_once 'Matrix.class.php';
 class Camera {
 
 	private $_position;
-	private $_angle;
+	private $_orientation;
 	private $_fov;
 	private $_ratio;
 	private $_nearplane;
@@ -20,7 +20,7 @@ class Camera {
 			exit(-1);
 		}
 		$this->_position = $kwargs['origin'];
-		$this->_angle = $kwargs['orientation'];
+		$this->_orientation = $kwargs['orientation'];
 		$this->_nearplane = $kwargs['near'];
 		$this->_farplane = $kwargs['far'];
 		$this->_fov = $kwargs['fov'];
@@ -47,9 +47,18 @@ class Camera {
 		return new Matrix( array('preset' => Matrix::TRANSLATION, 'vtc' => $vtc) );
 	}
 
-	public function getRt() {
-
+	public function getTr() {
+        return $this->_orientation->transpose();
 	}
+
+    public function getViewmatrix() {
+        return $this->gettR()->mult($this->getTt() );
+    }
+
+    public function getProj() {
+        return new Matrix( array( 'preset' => Matrix::PROJECTION, 'ratio' => $this->_ratio, 'fov' => $this->_fov,
+            'near' => $this->_nearplane, 'far' => $this->_farplane) );
+    }
 
 	function __destruct() {
 
@@ -60,7 +69,8 @@ class Camera {
 	}
 
 	function __toString() {
-		return (sprintf("+ Origine: %s\n+ tT:\n%s", $this->_position, $this->getTt()));
+		return (sprintf("+ Origine: %s\n+ tT:\n%s\ntR:\n%s\nViewmatrix:\n%s\nProj:\n%s", $this->_position,
+            $this->getTt(), $this->getTr(), $this->getViewmatrix(), $this->getProj() ));
 	}
 
 	function doc() {
