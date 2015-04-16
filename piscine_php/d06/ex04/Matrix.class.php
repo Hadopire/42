@@ -159,32 +159,49 @@ class Matrix {
 		return (file_get_contents('Matrix.doc.txt'));
 	}
 
-	public function mult($rhs) {
-		$res = clone $this;
-		$i = 0;
-		while (++$i < 5)
-		{
-			$j = 0;
-			while (++$j < 5)
-			{
-				$k = 0;
-				$sum = 0;
-				while (++$k < 5)
-					$sum += $this->_matrix['a'.$i][$k] * $rhs->_matrix['a'.$k][$j];
-				$res->_matrix['a'.$i][$j] = $sum;
-			}
-		}
-		return ($res);
-	}
+    public function transpose() {
+        $transpo = clone $this;
+        $transpo->_matrix['a1']['2'] = $this->_matrix['a2']['1'];
+        $transpo->_matrix['a1']['3'] = $this->_matrix['a3']['1'];
+        $transpo->_matrix['a1']['4'] = $this->_matrix['a4']['1'];
+        $transpo->_matrix['a2']['1'] = $this->_matrix['a1']['2'];
+        $transpo->_matrix['a2']['3'] = $this->_matrix['a3']['2'];
+        $transpo->_matrix['a2']['4'] = $this->_matrix['a4']['2'];
+        $transpo->_matrix['a3']['1'] = $this->_matrix['a1']['3'];
+        $transpo->_matrix['a3']['2'] = $this->_matrix['a2']['3'];
+        $transpo->_matrix['a3']['4'] = $this->_matrix['a4']['3'];
+        $transpo->_matrix['a4']['1'] = $this->_matrix['a1']['4'];
+        $transpo->_matrix['a4']['2'] = $this->_matrix['a2']['4'];
+        $transpo->_matrix['a4']['3'] = $this->_matrix['a3']['4'];
+        return $transpo;
+    }
 
-	public function transformVertex($vtx) {
-		$res = new Vertex( array(
-			'x' => $this->_matrix['a1']['1'] * $vtx->getX() + $this->_matrix['a1']['2'] * $vtx->getY() + $this->_matrix['a1']['3'] * $vtx->getZ() + $this->_matrix['a1']['4'] * $vtx->getW(),
-			'y' => $this->_matrix['a2']['1'] * $vtx->getX() + $this->_matrix['a2']['2'] * $vtx->getY() + $this->_matrix['a2']['3'] * $vtx->getZ() + $this->_matrix['a2']['4'] * $vtx->getW(),
-			'z' => $this->_matrix['a3']['1'] * $vtx->getX() + $this->_matrix['a3']['2'] * $vtx->getY() + $this->_matrix['a3']['3'] * $vtx->getZ() + $this->_matrix['a3']['4'] * $vtx->getW(),
-			'w' => $this->_matrix['a4']['1'] * $vtx->getX() + $this->_matrix['a4']['2'] * $vtx->getY() + $this->_matrix['a4']['3'] * $vtx->getZ() + $this->_matrix['a4']['4'] * $vtx->getW()
-		));
-		return $res;
-	}
+    public function mult($rhs) {
+        $res = clone $this;
+        $i = 0;
+        while (++$i < 5)
+        {
+            $j = 0;
+            while (++$j < 5)
+            {
+                $k = 0;
+                $sum = 0;
+                while (++$k < 5)
+                    $sum += $this->_matrix['a'.$i][$k] * $rhs->_matrix['a'.$k][$j];
+                $res->_matrix['a'.$i][$j] = $sum;
+            }
+        }
+        return ($res);
+    }
+
+    public function transformVertex($vtx) {
+        $res = new Vertex( array(
+                    'x' => $this->_matrix['a1']['1'] * $vtx->getX() + $this->_matrix['a1']['2'] * $vtx->getY() + $this->_matrix['a1']['3'] * $vtx->getZ() + $this->_matrix['a1']['4'] * $vtx->getW(),
+                    'y' => $this->_matrix['a2']['1'] * $vtx->getX() + $this->_matrix['a2']['2'] * $vtx->getY() + $this->_matrix['a2']['3'] * $vtx->getZ() + $this->_matrix['a2']['4'] * $vtx->getW(),
+                    'z' => $this->_matrix['a3']['1'] * $vtx->getX() + $this->_matrix['a3']['2'] * $vtx->getY() + $this->_matrix['a3']['3'] * $vtx->getZ() + $this->_matrix['a3']['4'] * $vtx->getW(),
+                    'w' => $this->_matrix['a4']['1'] * $vtx->getX() + $this->_matrix['a4']['2'] * $vtx->getY() + $this->_matrix['a4']['3'] * $vtx->getZ() + $this->_matrix['a4']['4'] * $vtx->getW()
+                    ));
+        return $res;
+    }
 }
 ?>
