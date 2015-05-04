@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:34:06 by ncharret          #+#    #+#             */
-/*   Updated: 2015/04/28 20:55:08 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/04 18:05:02 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <math.h>
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/uio.h>
@@ -36,11 +37,28 @@ typedef	struct	s_vector
 	float		w;
 }				t_vector;
 
+typedef struct	s_mesh
+{
+	GLfloat		*vtx;
+	GLfloat		*colors;
+	int			triangle_count;
+	t_vector	world_position;
+	int			angle;
+	GLuint		vertexbuffer;
+	GLuint		colorbuffer;
+}				t_mesh;
+
 GLuint				loadshader(const char *fichier_vertex_shader,
 								const char *fichier_fragment_shader);
 void 				create_translation_matrix(t_vector vtc, matrix mtx);
 void				print_matrix(matrix mtx);
 t_vector			init_vector(float x, float y, float z);
-void				print_triangle(GLfloat *vtx);
-void				transform_triangle(GLfloat *vtx, matrix mtx);
+void				print_triangle(GLfloat *vtx, int i);
+void				transform_triangle(GLfloat *vtx, matrix mtx, int index);
+void				create_rx_matrix(matrix mtx, float angle);
+void				create_ry_matrix(matrix mtx, float angle);
+void				create_rz_matrix(matrix mtx, float angle);
+void				transform_model(GLfloat *vtx, matrix mtx, int triangle_count);
+void				print_model(GLfloat *vtx, int triangle_count);
+void				draw_mesh(t_mesh mesh);
 #endif

@@ -6,11 +6,16 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:27:38 by ncharret          #+#    #+#             */
-/*   Updated: 2015/04/28 20:59:02 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/04 18:27:27 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
+
+double		toradian(double angle)
+{
+		return (((M_PI * angle) / 180));
+}
 
 int main()
 {
@@ -34,7 +39,7 @@ int main()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-	
+
 	// Double buffer On
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -62,42 +67,61 @@ int main()
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 
+	//mesh
+	t_mesh	pyramide;
 	//vertex
 	GLfloat g_vertex_buffer_data[] = {
-		-0.5, -0.5, 0.0,
-		0.5, -0.5, 0.0,
-		0.0, 0.5, 0.0,
+		-0.5f,-0.5f,0.0f, // triangle 1 : begin
+		0.5f,-0.5f, 0.0f,
+		0.0f, 0.5f, 0.0f, // triangle 1 : end
+		0.0f, 0.5f, 0.0f,
+		0.5f,-0.5f, 0.0f,
+		0.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 1.0f,
+		-0.5f,-0.5f,0.0f,
+		0.5f,-0.5f,0.0f,
+		0.0f, 0.0f, 1.0f,
+		-0.5f,-0.5f,0.0f,
+		0.0f, 0.5f,0.0f,
 	};
-	GLuint vertexbuffer;
-	glGenBuffers(1, &vertexbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
+	pyramide.vtx = g_vertex_buffer_data;
+	pyramide.triangle_count = 4;
+	glGenBuffers(1, &pyramide.vertexbuffer);
+	//colors
+	GLfloat g_color_buffer_data[] = {
+		0.583f,  0.771f,  0.014f,
+		0.609f,  0.115f,  0.436f,
+		0.327f,  0.483f,  0.844f,
+		0.583f,  0.771f,  0.014f,
+		0.609f,  0.115f,  0.436f,
+		0.327f,  0.483f,  0.844f,
+		0.583f,  0.771f,  0.014f,
+		0.609f,  0.115f,  0.436f,
+		0.327f,  0.483f,  0.844f,
+		0.583f,  0.771f,  0.014f,
+		0.609f,  0.115f,  0.436f,
+		0.327f,  0.483f,  0.844f,
+	};
+	pyramide.colors = g_color_buffer_data;
+	glGenBuffers(1, &pyramide.colorbuffer);
 	//load shaders
 	GLuint programID = loadshader( "vertex_shader.vertexshader", "FragmentShader.fragmentshader" );
-	
 	//TEST MATRIX
 	matrix mtx;
-	create_translation_matrix(init_vector(0.1, 0, 0), mtx);
-	print_matrix(mtx);
-	print_triangle(g_vertex_buffer_data);
-	transform_triangle(g_vertex_buffer_data, mtx);
-	print_triangle(g_vertex_buffer_data);
 	//FIN TEST
-	
+	// Enable depth test
+	glEnable(GL_DEPTH_TEST);
+	// // Accept fragment if it closer to the camera than the former one
+	glDepthFunc(GL_LESS);
+	print_model(pyramide.vtx, pyramide.triangle_count);
+	print_model(pyramide.colors, pyramide.triangle_count);
 	while (!terminate)
 	{	
 		glUseProgram(programID);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);		
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDisableVertexAttribArray(0);
-
+		draw_mesh(pyramide);	
+		//refresh
 		SDL_GL_SwapWindow(win);
-
 		SDL_PollEvent(&events);
 		if (events.window.event == SDL_WINDOWEVENT_CLOSE)
 			terminate = 1;
@@ -105,6 +129,26 @@ int main()
 		{
 			if (events.key.keysym.sym == 27)
 				terminate = 1;
+			else if (events.key.keysym.sym == SDLK_UP)
+			{
+				create_rx_matrix(mtx, toradian(1));
+				transform_model(pyramide.vtx, mtx, pyramide.triangle_count);
+			}
+			else if (events.key.keysym.sym == SDLK_DOWN)
+			{
+				create_rx_matrix(mtx, toradian(-1));
+				transform_model(pyramide.vtx, mtx, pyramide.triangle_count);
+			}
+			else if (events.key.keysym.sym == SDLK_RIGHT)
+			{
+				create_ry_matrix(mtx, toradian(1));
+				transform_model(pyramide.vtx, mtx, pyramide.triangle_count);
+			}
+			else if (events.key.keysym.sym == SDLK_LEFT)
+			{
+				create_ry_matrix(mtx, toradian(-1));
+				transform_model(pyramide.vtx, mtx, pyramide.triangle_count);
+			}
 		}
 	}
 
