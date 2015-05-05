@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:34:06 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/04 18:05:02 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/05 16:38:02 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,19 @@ typedef struct	s_mesh
 	GLfloat		*colors;
 	int			triangle_count;
 	t_vector	world_position;
-	int			angle;
 	GLuint		vertexbuffer;
 	GLuint		colorbuffer;
+	t_vector	angle;
+	float		scale;
 }				t_mesh;
+
+typedef struct	s_camconfig
+{
+	float		ratio;
+	float		fov;
+	float		near;
+	float		far;
+}				t_camconfig;
 
 GLuint				loadshader(const char *fichier_vertex_shader,
 								const char *fichier_fragment_shader);
@@ -61,4 +70,8 @@ void				create_rz_matrix(matrix mtx, float angle);
 void				transform_model(GLfloat *vtx, matrix mtx, int triangle_count);
 void				print_model(GLfloat *vtx, int triangle_count);
 void				draw_mesh(t_mesh mesh);
+double				toradian(double angle);
+void 				create_projection_matrix(matrix mtx, t_camconfig cfg);
+void				create_scale_matrix(matrix mtx, float factor);
+void				multiply_matrix(matrix result, matrix mt1, matrix mt2);
 #endif

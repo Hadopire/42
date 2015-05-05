@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 20:47:29 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/04 16:14:09 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/05 15:29:17 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	print_model(GLfloat *vtx, int triangle_count)
 {
 	int i;
 
+	printf("----MODEL-----\n");
 	i = 0;
 	while (i < triangle_count)
 	{

@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 19:42:47 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/04 18:27:24 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/05 16:58:02 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,16 @@ void	print_matrix(matrix mtx)
 
 void	transform_vector(t_vector *vec, matrix mtx)
 {
-			vtx[i] = mtx[0][0] * x + mtx[0][1] * y + mtx[0][2] * z + mtx[0][3];
-		vtx[i + 1] = mtx[1][0] * x + mtx[1][1] * y + mtx[1][2] * z + mtx[1][3];
-		vtx[i + 2] = mtx[2][0] * x + mtx[2][1] * y + mtx[2][2] * z + mtx[2][3];
+	float x;
+	float y;
+	float z;
+
+	x = vec->x;
+	y = vec->y;
+	z = vec->z;
+	vec->x = mtx[0][0] * x + mtx[0][1] * y + mtx[0][2] * z + mtx[0][3];
+	vec->y = mtx[1][0] * x + mtx[1][1] * y + mtx[1][2] * z + mtx[1][3];
+	vec->z = mtx[2][0] * x + mtx[2][1] * y + mtx[2][2] * z + mtx[2][3];
 }
 
 void	transform_triangle(GLfloat *vtx, matrix mtx, int index)
@@ -52,7 +59,7 @@ void	transform_triangle(GLfloat *vtx, matrix mtx, int index)
 	}
 }
 
-void	transform_model(GLfloat *vtx, matrix mtx, int triangle_count)
+void	transform_model(float *vtx, matrix mtx, int triangle_count)
 {
 	int i;
 
@@ -61,5 +68,27 @@ void	transform_model(GLfloat *vtx, matrix mtx, int triangle_count)
 	{
 		transform_triangle(vtx, mtx, i * 9);
 		i++;
+	}
+}
+
+void	multiply_matrix(matrix result, matrix mt1, matrix mt2)
+{
+	int i;
+	int j;
+	float sum;
+	int	k;
+
+	i = -1;
+	while (++i < 4)
+	{
+		j = -1;
+		while (++j < 4)
+		{
+			k = -1;
+			sum = 0;
+			while (++k < 4)
+				sum += mt1[i][k] * mt2[k][j];
+			result[i][j] = sum;
+		}
 	}
 }
