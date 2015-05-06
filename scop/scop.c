@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:27:38 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/06 16:07:52 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/06 20:32:31 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,11 +170,13 @@ int main()
 	ModelMatrices[2] = glGetUniformLocation(programID, "TRANS");
 	GLuint ProjectionMatrix;
 	ProjectionMatrix = glGetUniformLocation(programID, "PROJECTION");
+	GLuint ViewMatrix;
+	ViewMatrix = glGetUniformLocation(programID, "VIEW");
 	while (!terminate)
 	{	
 		glUseProgram(programID);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		draw_mesh(pyramide, ModelMatrices, ProjectionMatrix);	
+		draw_mesh(pyramide, ModelMatrices, ProjectionMatrix, ViewMatrix);	
 		//refresh
 		SDL_GL_SwapWindow(win);
 		SDL_PollEvent(&events);
@@ -186,19 +188,19 @@ int main()
 				terminate = 1;
 			else if (events.key.keysym.sym == SDLK_UP)
 			{
-				pyramide.angle.x++;
+				pyramide.angle.x+=2;
 			}
 			else if (events.key.keysym.sym == SDLK_DOWN)
 			{
-				pyramide.angle.x--;
+				pyramide.angle.x-=2;
 			}
 			else if (events.key.keysym.sym == SDLK_RIGHT)
 			{
-				pyramide.angle.y++;
+				pyramide.angle.y+=2;
 			}
 			else if (events.key.keysym.sym == SDLK_LEFT)
 			{
-				pyramide.angle.y--;
+				pyramide.angle.y-=2;
 			}
 			else if (events.key.keysym.sym == SDLK_d)
 				pyramide.world_position.x += 0.02;

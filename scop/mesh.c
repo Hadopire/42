@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 17:29:10 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/06 16:11:10 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/06 20:50:41 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	get_rotation_matrix(matrix result, float x, float y, float z)
 	create_rz_matrix(mt1, z);
 	multiply_matrix(result, mt3, mt1);
 }
-void	draw_mesh(t_mesh mesh, GLuint *ModelMatrices, GLuint ProjectionMatrix)
+void	draw_mesh(t_mesh mesh, GLuint *ModelMatrices, GLuint ProjectionMatrix, GLuint ViewMatrix)
 {
 	matrix mtx;
 	matrix mt1;
@@ -34,21 +34,22 @@ void	draw_mesh(t_mesh mesh, GLuint *ModelMatrices, GLuint ProjectionMatrix)
 
 	cfg.near = 0.1;
 	cfg.far = 100.f;
-	cfg.fov = 90.f;
+	cfg.fov = 45.f;
 	cfg.ratio = 800.f/600.f;
 	GLuint vtx[mesh.triangle_count * 9];
 	ft_memcpy(vtx, mesh.vtx, sizeof(GLfloat) * (mesh.triangle_count * 9));
 	//scale & position & rotation	
 	create_scale_matrix(mt1, mesh.scale);
 	get_rotation_matrix(mt2, mesh.angle.x, mesh.angle.y, mesh.angle.z);
+	transform_model
 	create_translation_matrix(mesh.world_position, mtx);
 	glUniformMatrix4fv(ModelMatrices[0], 1, GL_FALSE, &mt1[0][0]);
 	glUniformMatrix4fv(ModelMatrices[1], 1, GL_FALSE, &mt2[0][0]);
 	glUniformMatrix4fv(ModelMatrices[2], 1, GL_FALSE, &mtx[0][0]);
-	create_projection_matrix(mtx, cfg);
-	glUniformMatrix4fv(ProjectionMatrix, 1, GL_FALSE, &mtx[0][0]);
-	printf("--------PROJ MATRIX----------\n");
-	print_matrix(mtx);
+	create_projection_matrix(mt1, cfg);
+	glUniformMatrix4fv(ProjectionMatrix, 1, GL_FALSE, &mt1[0][0]);
+	create_lookat_matrix(mtx, init_vector(2, 2, 2), init_vector(0, 0, 0), init_vector(0, 1, 0));
+	glUniformMatrix4fv(ViewMatrix, 1, GL_FALSE, &mtx[0][0]);
 	//colors
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh.colorbuffer);

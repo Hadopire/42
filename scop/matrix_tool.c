@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 19:42:47 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/06 15:59:31 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/06 20:07:47 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void	print_matrix(matrix mtx)
 {
 	printf("M | vtcX | vtcY | vtcZ | vtxO\n-----------------------------\n");
 	printf("x | %.02f | % .02f | %.02f | %.02f\n",
-			mtx[0][0], mtx[1][0], mtx[2][0], mtx[3][0]);
+			mtx[0][0], mtx[0][1], mtx[0][2], mtx[0][3]);
 	printf("y | %.02f | % .02f | %.02f | %.02f\n",
-			mtx[0][1], mtx[1][1], mtx[2][1], mtx[3][1]);
+			mtx[1][0], mtx[1][1], mtx[1][2], mtx[1][3]);
 	printf("z | %.02f | % .02f | %.02f | %.02f\n",
-			mtx[0][2], mtx[1][2], mtx[2][2], mtx[3][2]);
+			mtx[2][0], mtx[2][1], mtx[2][2], mtx[2][3]);
 	printf("w | %.02f | % .02f | %.02f | %.02f\n",
-			mtx[0][3], mtx[1][3], mtx[2][3], mtx[3][3]);
+			mtx[3][0], mtx[3][1], mtx[3][2], mtx[3][3]);
 }
 
 void	transform_vector(t_vector *vec, matrix mtx)

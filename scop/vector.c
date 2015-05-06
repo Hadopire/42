@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 19:52:03 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/06 16:35:32 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/06 19:17:11 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,26 @@ t_vector	cross_product(t_vector a, t_vector b)
 	return (vector);
 }
 
+float		magnitude(t_vector a)
+{
+	float result;
+
+	result = (a.x * a.x) + (a.y * a.y) + (a.z * a.z);
+	printf("%g^2 + %g^2 + %g^2 = %g\n", a.x, a.y, a.z, result);
+	result = result ? sqrt(result) : 0;
+	return (result);
+}
+
 t_vector	norm_vector(t_vector a)
 {
-	t_vector vector;
+	t_vector	vector;
+	float		magn;
 
-	vector.x = a.x / sqrtf( ( (a.x * a.x) + (a.x * a.y) + (a.z * a.z) ) );
-	vector.y = a.y / sqrtf( ( (a.x * a.x) + (a.x * a.y) + (a.z * a.z) ) );
-	vector.z = a.z / sqrtf( ( (a.x * a.x) + (a.x * a.y) + (a.z * a.z) ) );
+	magn = magnitude(a);
+	printf("MAGN : %g\n", magn);
+	vector.x = magn == 0 ? 0 : a.x / magn;
+	printf("X : %g\n", vector.x);
+	vector.y = magn == 0 ? 0 : a.y / magn;
+	vector.z = magn == 0 ? 0 : a.z / magn;
 	return (vector);
 }
