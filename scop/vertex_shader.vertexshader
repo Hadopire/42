@@ -1,9 +1,16 @@
 #version 410 core
 layout(location = 0) in vec3 vertexPosition_modelspace;
 layout(location = 1) in vec3 vertexColor;
+uniform mat4 TRANS;
+uniform mat4 SCALE;
+uniform mat4 ROTATION;
+uniform mat4 PROJECTION;
 out vec3 fragmentColor;
 void main(){
-	   gl_Position.xyz = vertexPosition_modelspace;
+	   vec4 v = vec4(vertexPosition_modelspace,1);
+	   mat4 MODEL = TRANS * ROTATION * SCALE;
+	   mat4 MVP = PROJECTION * MODEL;
+	   gl_Position = MVP * v;
 	   gl_Position.w = 1.0;
 	   fragmentColor = vertexColor;
 }

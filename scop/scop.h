@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:34:06 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/05 16:38:02 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/06 16:37:44 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,13 @@ void				create_ry_matrix(matrix mtx, float angle);
 void				create_rz_matrix(matrix mtx, float angle);
 void				transform_model(GLfloat *vtx, matrix mtx, int triangle_count);
 void				print_model(GLfloat *vtx, int triangle_count);
-void				draw_mesh(t_mesh mesh);
+void				draw_mesh(t_mesh mesh, GLuint *ModelMatrices, GLuint ProjectionMatrix);
 double				toradian(double angle);
 void 				create_projection_matrix(matrix mtx, t_camconfig cfg);
 void				create_scale_matrix(matrix mtx, float factor);
 void				multiply_matrix(matrix result, matrix mt1, matrix mt2);
+t_vector			sub_vector(t_vector a, t_vector b);
+double				dot_product(t_vector a, t_vector b);
+t_vector			cross_product(t_vector a, t_vector b);
+t_vector			norm_vector(t_vector a);
 #endif

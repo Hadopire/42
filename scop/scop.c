@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:27:38 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/05 18:03:44 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/06 16:07:52 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int main()
 		-1.0f, 1.0f, 1.0f,
 		1.0f,-1.0f, 1.0f
 	};
-	pyramide.world_position = init_vector(0, 0, 0);
+	pyramide.world_position = init_vector(1, 0, 0);
 	pyramide.angle = init_vector(0, 0, 0);
 	pyramide.scale = 0.5;
 	pyramide.vtx = g_vertex_buffer_data;
@@ -164,13 +164,17 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	// // Accept fragment if it closer to the camera than the former one
 	glDepthFunc(GL_LESS);
-	print_model(pyramide.vtx, pyramide.triangle_count);
-	print_model(pyramide.colors, pyramide.triangle_count);
+	GLuint ModelMatrices[3];
+	ModelMatrices[0] = glGetUniformLocation(programID, "SCALE");
+	ModelMatrices[1] = glGetUniformLocation(programID, "ROTATION");
+	ModelMatrices[2] = glGetUniformLocation(programID, "TRANS");
+	GLuint ProjectionMatrix;
+	ProjectionMatrix = glGetUniformLocation(programID, "PROJECTION");
 	while (!terminate)
 	{	
 		glUseProgram(programID);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		draw_mesh(pyramide);	
+		draw_mesh(pyramide, ModelMatrices, ProjectionMatrix);	
 		//refresh
 		SDL_GL_SwapWindow(win);
 		SDL_PollEvent(&events);
