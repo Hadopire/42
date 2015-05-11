@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 19:42:47 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/06 20:07:47 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/07 17:33:24 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	transform_vector(t_vector *vec, matrix mtx)
 	vec->z = mtx[2][0] * x + mtx[2][1] * y + mtx[2][2] * z + mtx[2][3];
 }
 
-void	transform_triangle(GLfloat *vtx, matrix mtx, int index)
+void	transform_vertex(GLfloat *vtx, matrix mtx, int index)
 {
 	int		i;
 	float	x;
@@ -47,16 +47,12 @@ void	transform_triangle(GLfloat *vtx, matrix mtx, int index)
 	float	z;
 
 	i = index;
-	while (i < index + 9)
-	{
-		x = vtx[i];
-		y = vtx[i + 1];
-		z = vtx[i + 2];
-		vtx[i] = mtx[0][0] * x + mtx[0][1] * y + mtx[0][2] * z + mtx[0][3];
-		vtx[i + 1] = mtx[1][0] * x + mtx[1][1] * y + mtx[1][2] * z + mtx[1][3];
-		vtx[i + 2] = mtx[2][0] * x + mtx[2][1] * y + mtx[2][2] * z + mtx[2][3];
-		i += 3;
-	}
+	x = vtx[i];
+	y = vtx[i + 1];
+	z = vtx[i + 2];
+	vtx[i] = mtx[0][0] * x + mtx[0][1] * y + mtx[0][2] * z + mtx[0][3];
+	vtx[i + 1] = mtx[1][0] * x + mtx[1][1] * y + mtx[1][2] * z + mtx[1][3];
+	vtx[i + 2] = mtx[2][0] * x + mtx[2][1] * y + mtx[2][2] * z + mtx[2][3];
 }
 
 void	transform_model(float *vtx, matrix mtx, int triangle_count)
@@ -66,8 +62,8 @@ void	transform_model(float *vtx, matrix mtx, int triangle_count)
 	i = 0;
 	while (i < triangle_count)
 	{
-		transform_triangle(vtx, mtx, i * 9);
-		i++;
+		transform_vertex(vtx, mtx, i);
+		i+=3;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:34:06 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/06 18:15:15 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/11 15:48:11 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,23 @@ typedef struct	s_mesh
 {
 	GLfloat		*vtx;
 	GLfloat		*colors;
-	int			triangle_count;
+	int			vertex_count;
 	t_vector	world_position;
 	GLuint		vertexbuffer;
 	GLuint		colorbuffer;
 	t_vector	angle;
 	float		scale;
 }				t_mesh;
+
+typedef struct	s_keys
+{
+	int			d;
+	int			a;
+	int			right;
+	int			left;
+	int			up;
+	int			down;
+}				t_keys;
 
 typedef struct	s_camconfig
 {
@@ -79,4 +89,5 @@ double				dot_product(t_vector a, t_vector b);
 t_vector			cross_product(t_vector a, t_vector b);
 t_vector			norm_vector(t_vector a);
 void				create_lookat_matrix(matrix mtx, t_vector eye, t_vector target, t_vector up);
+t_mesh				load_model(char *path);
 #endif

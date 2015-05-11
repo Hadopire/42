@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 19:52:03 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/06 19:17:11 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/07 13:49:17 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ float		magnitude(t_vector a)
 	float result;
 
 	result = (a.x * a.x) + (a.y * a.y) + (a.z * a.z);
-	printf("%g^2 + %g^2 + %g^2 = %g\n", a.x, a.y, a.z, result);
 	result = result ? sqrt(result) : 0;
 	return (result);
 }
@@ -64,9 +63,7 @@ t_vector	norm_vector(t_vector a)
 	float		magn;
 
 	magn = magnitude(a);
-	printf("MAGN : %g\n", magn);
 	vector.x = magn == 0 ? 0 : a.x / magn;
-	printf("X : %g\n", vector.x);
 	vector.y = magn == 0 ? 0 : a.y / magn;
 	vector.z = magn == 0 ? 0 : a.z / magn;
 	return (vector);

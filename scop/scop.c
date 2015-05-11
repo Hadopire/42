@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:27:38 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/06 20:32:31 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/11 16:16:25 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,20 @@ double		toradian(double angle)
 	return (((M_PI * angle) / 180));
 }
 
-int main()
+void		init_keys(t_keys *keys)
 {
+	keys->d = 0;
+	keys->a = 0;
+	keys->up = 0;
+	keys->down = 0;
+	keys->left = 0;
+	keys->right = 0;
+}
+
+int main(int ac, char **av)
+{
+	if (ac > 1)
+		load_model(av[1]);
 	// Notre fenêtre
 
 	SDL_Window	*win;
@@ -74,84 +86,19 @@ int main()
 		-1.0f,-1.0f,-1.0f, // triangle 1 : begin
 		-1.0f,-1.0f, 1.0f,
 		-1.0f, 1.0f, 1.0f, // triangle 1 : end
-		1.0f, 1.0f,-1.0f, // triangle 2 : begin
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f,-1.0f, // triangle 2 : end
-		1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f,-1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f,-1.0f,
-		-1.0f, 1.0f,-1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f
 	};
 	pyramide.world_position = init_vector(1, 0, 0);
 	pyramide.angle = init_vector(0, 0, 0);
 	pyramide.scale = 0.5;
 	pyramide.vtx = g_vertex_buffer_data;
-	pyramide.triangle_count = 12;
+	pyramide.vertex_count = sizeof(g_vertex_buffer_data) / sizeof(GLfloat);
+	printf("SIZE : %d\n", pyramide.vertex_count);
 	glGenBuffers(1, &pyramide.vertexbuffer);
 	//colors
 	GLfloat g_color_buffer_data[] = {
 	0.583f,  0.771f,  0.014f,
     0.609f,  0.115f,  0.436f,
     0.327f,  0.483f,  0.844f,
-    0.822f,  0.569f,  0.201f,
-    0.435f,  0.602f,  0.223f,
-    0.310f,  0.747f,  0.185f,
-    0.597f,  0.770f,  0.761f,
-    0.559f,  0.436f,  0.730f,
-    0.359f,  0.583f,  0.152f,
-    0.483f,  0.596f,  0.789f,
-    0.559f,  0.861f,  0.639f,
-    0.195f,  0.548f,  0.859f,
-    0.014f,  0.184f,  0.576f,
-    0.771f,  0.328f,  0.970f,
-    0.406f,  0.615f,  0.116f,
-    0.676f,  0.977f,  0.133f,
-    0.971f,  0.572f,  0.833f,
-    0.140f,  0.616f,  0.489f,
-    0.997f,  0.513f,  0.064f,
-    0.945f,  0.719f,  0.592f,
-    0.543f,  0.021f,  0.978f,
-    0.279f,  0.317f,  0.505f,
-    0.167f,  0.620f,  0.077f,
-    0.347f,  0.857f,  0.137f,
-    0.055f,  0.953f,  0.042f,
-    0.714f,  0.505f,  0.345f,
-    0.783f,  0.290f,  0.734f,
-    0.722f,  0.645f,  0.174f,
-    0.302f,  0.455f,  0.848f,
-    0.225f,  0.587f,  0.040f,
-    0.517f,  0.713f,  0.338f,
-    0.053f,  0.959f,  0.120f,
-    0.393f,  0.621f,  0.362f,
-    0.673f,  0.211f,  0.457f,
-    0.820f,  0.883f,  0.371f,
-    0.982f,  0.099f,  0.879f	
 	};
 	pyramide.colors = g_color_buffer_data;
 	glGenBuffers(1, &pyramide.colorbuffer);
@@ -164,14 +111,15 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	// // Accept fragment if it closer to the camera than the former one
 	glDepthFunc(GL_LESS);
-	GLuint ModelMatrices[3];
+	GLuint ModelMatrices[2];
 	ModelMatrices[0] = glGetUniformLocation(programID, "SCALE");
-	ModelMatrices[1] = glGetUniformLocation(programID, "ROTATION");
-	ModelMatrices[2] = glGetUniformLocation(programID, "TRANS");
+	ModelMatrices[1] = glGetUniformLocation(programID, "TRANS");
 	GLuint ProjectionMatrix;
 	ProjectionMatrix = glGetUniformLocation(programID, "PROJECTION");
 	GLuint ViewMatrix;
 	ViewMatrix = glGetUniformLocation(programID, "VIEW");
+	t_keys keys;
+	init_keys(&keys);
 	while (!terminate)
 	{	
 		glUseProgram(programID);
@@ -186,27 +134,36 @@ int main()
 		{
 			if (events.key.keysym.sym == 27)
 				terminate = 1;
-			else if (events.key.keysym.sym == SDLK_UP)
-			{
-				pyramide.angle.x+=2;
-			}
-			else if (events.key.keysym.sym == SDLK_DOWN)
-			{
-				pyramide.angle.x-=2;
-			}
-			else if (events.key.keysym.sym == SDLK_RIGHT)
-			{
-				pyramide.angle.y+=2;
-			}
-			else if (events.key.keysym.sym == SDLK_LEFT)
-			{
-				pyramide.angle.y-=2;
-			}
-			else if (events.key.keysym.sym == SDLK_d)
-				pyramide.world_position.x += 0.02;
-			else if (events.key.keysym.sym == SDLK_a)
-				pyramide.world_position.x -= 0.02;
 		}
+		const Uint8 *state = SDL_GetKeyboardState(NULL);
+		if (state[SDL_SCANCODE_UP])
+		{
+			create_rx_matrix(mtx, 1);
+			transform_model(pyramide.vtx, mtx, pyramide.vertex_count);
+		}
+		if (state[SDL_SCANCODE_DOWN])
+		{
+			create_rx_matrix(mtx, -1);
+			transform_model(pyramide.vtx, mtx, pyramide.vertex_count);
+		}
+		if (state[SDL_SCANCODE_RIGHT])
+		{
+			create_ry_matrix(mtx, 1);
+			transform_model(pyramide.vtx, mtx, pyramide.vertex_count);
+		}
+		if (state[SDL_SCANCODE_LEFT])
+		{
+			create_ry_matrix(mtx, -1);
+			transform_model(pyramide.vtx, mtx, pyramide.vertex_count);
+		}
+		if (state[SDL_SCANCODE_D])
+			pyramide.world_position.x += 0.02;
+		if (state[SDL_SCANCODE_A])
+			pyramide.world_position.x -= 0.02;
+		if (state[SDL_SCANCODE_W])
+			pyramide.world_position.y += 0.02;
+		if (state[SDL_SCANCODE_S])
+			pyramide.world_position.y -= 0.02;
 	}
 
 	// On quitte la SDL
