@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:34:06 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/11 15:48:11 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/12 15:41:53 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,14 @@ typedef struct	s_camconfig
 	float		near;
 	float		far;
 }				t_camconfig;
+
+typedef struct	s_objindex
+{
+	int		cstart;
+	int		clen;
+	int		vstart;
+	int		vlen;
+}				t_objindex;
 
 GLuint				loadshader(const char *fichier_vertex_shader,
 								const char *fichier_fragment_shader);
