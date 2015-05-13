@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:34:06 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/12 15:41:53 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/13 17:00:38 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,6 @@ typedef struct	s_mesh
 	t_vector	angle;
 	float		scale;
 }				t_mesh;
-
-typedef struct	s_keys
-{
-	int			d;
-	int			a;
-	int			right;
-	int			left;
-	int			up;
-	int			down;
-}				t_keys;
 
 typedef struct	s_camconfig
 {

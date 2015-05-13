@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:27:38 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/11 16:16:25 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/13 17:00:26 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,8 @@ double		toradian(double angle)
 	return (((M_PI * angle) / 180));
 }
 
-void		init_keys(t_keys *keys)
-{
-	keys->d = 0;
-	keys->a = 0;
-	keys->up = 0;
-	keys->down = 0;
-	keys->left = 0;
-	keys->right = 0;
-}
-
 int main(int ac, char **av)
 {
-	if (ac > 1)
-		load_model(av[1]);
 	// Notre fenêtre
 
 	SDL_Window	*win;
@@ -81,26 +69,28 @@ int main(int ac, char **av)
 
 	//mesh
 	t_mesh	pyramide;
+
 	//vertex
-	GLfloat g_vertex_buffer_data[] = {
+	/*GLfloat g_vertex_buffer_data[] = {
 		-1.0f,-1.0f,-1.0f, // triangle 1 : begin
 		-1.0f,-1.0f, 1.0f,
 		-1.0f, 1.0f, 1.0f, // triangle 1 : end
-	};
+	};*/
+	pyramide = load_model(av[1]);
 	pyramide.world_position = init_vector(1, 0, 0);
 	pyramide.angle = init_vector(0, 0, 0);
 	pyramide.scale = 0.5;
-	pyramide.vtx = g_vertex_buffer_data;
+	/*pyramide.vtx = g_vertex_buffer_data;
 	pyramide.vertex_count = sizeof(g_vertex_buffer_data) / sizeof(GLfloat);
 	printf("SIZE : %d\n", pyramide.vertex_count);
-	glGenBuffers(1, &pyramide.vertexbuffer);
-	//colors
+	*/glGenBuffers(1, &pyramide.vertexbuffer);
+	/*//colors
 	GLfloat g_color_buffer_data[] = {
 	0.583f,  0.771f,  0.014f,
     0.609f,  0.115f,  0.436f,
     0.327f,  0.483f,  0.844f,
-	};
-	pyramide.colors = g_color_buffer_data;
+	};*/
+	//pyramide.colors = g_color_buffer_data;
 	glGenBuffers(1, &pyramide.colorbuffer);
 	//load shaders
 	GLuint programID = loadshader( "vertex_shader.vertexshader", "FragmentShader.fragmentshader" );
@@ -118,8 +108,6 @@ int main(int ac, char **av)
 	ProjectionMatrix = glGetUniformLocation(programID, "PROJECTION");
 	GLuint ViewMatrix;
 	ViewMatrix = glGetUniformLocation(programID, "VIEW");
-	t_keys keys;
-	init_keys(&keys);
 	while (!terminate)
 	{	
 		glUseProgram(programID);
@@ -138,24 +126,28 @@ int main(int ac, char **av)
 		const Uint8 *state = SDL_GetKeyboardState(NULL);
 		if (state[SDL_SCANCODE_UP])
 		{
-			create_rx_matrix(mtx, 1);
+			create_rx_matrix(mtx, 2);
 			transform_model(pyramide.vtx, mtx, pyramide.vertex_count);
 		}
 		if (state[SDL_SCANCODE_DOWN])
 		{
-			create_rx_matrix(mtx, -1);
+			create_rx_matrix(mtx, -2);
 			transform_model(pyramide.vtx, mtx, pyramide.vertex_count);
 		}
 		if (state[SDL_SCANCODE_RIGHT])
 		{
-			create_ry_matrix(mtx, 1);
+			create_ry_matrix(mtx, 2);
 			transform_model(pyramide.vtx, mtx, pyramide.vertex_count);
 		}
 		if (state[SDL_SCANCODE_LEFT])
 		{
-			create_ry_matrix(mtx, -1);
+			create_ry_matrix(mtx, -2);
 			transform_model(pyramide.vtx, mtx, pyramide.vertex_count);
 		}
+		if (state[SDL_SCANCODE_KP_MINUS])
+			pyramide.scale = pyramide.scale < 0.1 ? pyramide.scale : pyramide.scale - 0.05;
+		if (state[SDL_SCANCODE_KP_PLUS])
+			pyramide.scale += 0.05;
 		if (state[SDL_SCANCODE_D])
 			pyramide.world_position.x += 0.02;
 		if (state[SDL_SCANCODE_A])
