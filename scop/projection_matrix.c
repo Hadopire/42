@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 14:08:41 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/06 18:34:25 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/14 20:35:18 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void create_projection_matrix(matrix mtx, t_camconfig cfg)
 {
 	float focal_length;
-	
-	focal_length = 1.f / tanf(cfg.fov / 2.f);
+
+	focal_length = 1.f / tanf(toradian(cfg.fov) / 2.f);
 	mtx[0][0] = focal_length / (float)cfg.ratio;
 	mtx[0][1] = 0.0;
 	mtx[0][2] = 0.0;

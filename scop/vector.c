@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 19:52:03 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/07 13:49:17 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/14 18:18:35 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,6 @@ t_vector	sub_vector(t_vector a, t_vector b)
 	vector.y = a.y - b.y;
 	vector.z = a.z - b.z;
 	return (vector);
-}
-
-double		dot_product(t_vector a, t_vector b)
-{
-	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
 t_vector	cross_product(t_vector a, t_vector b)

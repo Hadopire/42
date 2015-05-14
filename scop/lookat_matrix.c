@@ -6,19 +6,19 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/06 16:22:44 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/06 18:33:38 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/14 18:00:23 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 
-void create_lookat_matrix(matrix mtx, t_vector eye, t_vector target, t_vector up)
+void create_lookat_matrix(matrix mtx, t_vector eye, t_vector trgt, t_vector up)
 {
-	t_vector f;
-	t_vector u;
-	t_vector s;
-		
-	f = norm_vector(sub_vector(target, eye));
+	t_vector	f;
+	t_vector	u;
+	t_vector	s;
+
+	f = norm_vector(sub_vector(trgt, eye));
 	u = norm_vector(up);
 	s = norm_vector(cross_product(f, u));
 	u = cross_product(s, f);

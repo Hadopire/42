@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:34:06 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/13 17:00:38 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/14 20:22:52 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,20 @@ typedef struct	s_objindex
 	int		vlen;
 }				t_objindex;
 
+typedef struct	s_sdlattr
+{	
+	SDL_Window		*win;
+	SDL_Event		events;
+	SDL_GLContext	openglcontext;	
+}				t_sdlattr;
+
+typedef struct	s_mvp
+{
+	GLuint		projmtx;
+	GLuint		viewmtx;
+	GLuint		modelmtx[2];
+}				t_mvp;
+
 GLuint				loadshader(const char *fichier_vertex_shader,
 								const char *fichier_fragment_shader);
 void 				create_translation_matrix(t_vector vtc, matrix mtx);
@@ -77,7 +91,7 @@ void				create_ry_matrix(matrix mtx, float angle);
 void				create_rz_matrix(matrix mtx, float angle);
 void				transform_model(GLfloat *vtx, matrix mtx, int triangle_count);
 void				print_model(GLfloat *vtx, int triangle_count);
-void				draw_mesh(t_mesh mesh, GLuint *ModelMatrices, GLuint ProjectionMatrix, GLuint ViewMatrix);
+void				draw_mesh(t_mesh mesh, t_mvp mvp);
 double				toradian(double angle);
 void 				create_projection_matrix(matrix mtx, t_camconfig cfg);
 void				create_scale_matrix(matrix mtx, float factor);
@@ -88,4 +102,13 @@ t_vector			cross_product(t_vector a, t_vector b);
 t_vector			norm_vector(t_vector a);
 void				create_lookat_matrix(matrix mtx, t_vector eye, t_vector target, t_vector up);
 t_mesh				load_model(char *path);
+void				get_coord_index(char **file, int *vstart, int *vlen);
+void				get_vertex_index(char **file, int *vstart, int *vlen, int i);
+int					count_obj_vertex(int vstart, int vlen, char **file);
+int					count_line_index(char **file, int line);
+void				get_index(char **file, int *numb, int i, int linecount);
+void				error(char *msg);
+char				*read_obj(char *path);
+char				**split_obj(char **file);
+void				key_input(t_mesh *mesh);
 #endif

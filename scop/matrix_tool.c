@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 19:42:47 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/07 17:33:24 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/14 17:58:58 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,16 @@ void	transform_model(float *vtx, matrix mtx, int triangle_count)
 	while (i < triangle_count)
 	{
 		transform_vertex(vtx, mtx, i);
-		i+=3;
+		i += 3;
 	}
 }
 
 void	multiply_matrix(matrix result, matrix mt1, matrix mt2)
 {
-	int i;
-	int j;
-	float sum;
-	int	k;
+	int		i;
+	int		j;
+	float	sum;
+	int		k;
 
 	i = -1;
 	while (++i < 4)
