@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 15:44:18 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/14 20:46:12 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/15 17:25:08 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ void		get_vtx(char *line, t_mesh *mesh, int *vtxindex)
 		while (ft_isdigit(line[i]))
 			i++;
 		if (line[i] != ' ' && line[i] != '\0')
-			error("Error : Wrong file format");
+			error("Error : Wrong file format (.obj needed)");
 		while (line[i] == ' ')
 			i++;
 		nb_coord++;
 	}
 	if (nb_coord != 3)
-		error("Error : Wrong file format");
+		error("Error : Wrong file format (.obj needed)");
 }
 
 void		fill_vertex(t_mesh *mesh, char **file, t_objindex index)
@@ -78,7 +78,7 @@ t_mesh		parse_obj(char **file)
 	get_coord_index(file, &idx.cstart, &idx.clen);
 	get_vertex_index(file, &idx.vstart, &idx.vlen, idx.cstart + idx.clen);
 	if (idx.clen <= 0 || idx.vlen <= 0)
-		error("Wrong file format");
+		error("Error : wrong file format (.obj needed)");
 	mesh.vertex_count = count_obj_vertex(idx.vstart, idx.vlen, file) * 3;
 	if (!(mesh.vtx = malloc(sizeof(GLfloat) * mesh.vertex_count)))
 		error("Error : malloc error");
@@ -117,7 +117,24 @@ void		fill_colors(t_mesh *mesh)
 	}
 }
 
-t_mesh		load_model(char *path)
+void		generate_uv(t_mesh *mesh)
+{
+	int	i;
+	int	a;
+
+	a = 0;
+	i = 0;
+	mesh->uv = (GLfloat*)malloc(sizeof(GLfloat) * (mesh->vertex_count * (2.f / 3.f) + 1));
+	while (i < mesh->vertex_count)
+	{
+		mesh->uv[a] = mesh->vtx[i] + mesh->vtx[i + 2];
+		mesh->uv[a + 1] = mesh->vtx[i] + mesh->vtx[i + 1];
+		i += 3;
+		a += 2;
+	}
+}
+
+t_mesh		load_model(char *path, char *imgpath)
 {
 	char	*filestr;
 	char	**file;
@@ -132,11 +149,12 @@ t_mesh		load_model(char *path)
 	mesh.scale = 1;
 	glGenBuffers(1, &mesh.vertexbuffer);
 	glGenBuffers(1, &mesh.colorbuffer);
-	int i = 0;
-	while (i < mesh.vertex_count)
-	{
-		printf("x : %g y : %g z : %g\n", mesh.vtx[i], mesh.vtx[i + 1], mesh.vtx[i + 2]);
-		i+=3;
-	}
+	glGenBuffers(1, &mesh.uvbuffer);
+	if (imgpath)
+		mesh.texture = load_bmp(imgpath);
+	else
+		ft_putendl("TEXTURE OFF");
+	if (mesh.texture.data)
+		generate_uv(&mesh);
 	return (mesh);
 }

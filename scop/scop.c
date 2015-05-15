@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:27:38 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/14 21:08:11 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/15 15:01:26 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int main(int ac, char **av)
 	init_sdl();
 	init_win(&sdlattr);
 	init_opengl();
-	mesh = load_model(av[1]);
+	mesh = load_model(av[1], ac > 2 ? av[2] : NULL);
 	programid = loadshader("vertex_shader.vertexshader", "FragmentShader.fragmentshader");
 	mvp.modelmtx[0] = glGetUniformLocation(programid, "SCALE");
 	mvp.modelmtx[1] = glGetUniformLocation(programid, "TRANS");

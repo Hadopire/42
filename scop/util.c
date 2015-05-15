@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/14 17:31:22 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/14 18:18:23 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/15 15:44:14 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,12 @@ char		*read_obj(char *path)
 	int		size;
 
 	if ((fd = open(path, O_RDONLY)) < 0)
-		error("ERROR : Can't open file");
+		error("ERROR : Can't open .obj file");
 	size = lseek(fd, 0, SEEK_END);
 	lseek(fd, 0, SEEK_SET);
 	j = malloc(sizeof(char) * size);
 	read(fd, j, size);
+	close(fd);
 	return (j);
 }
 

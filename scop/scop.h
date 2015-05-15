@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:34:06 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/14 20:22:52 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/15 17:24:57 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,27 @@ typedef	struct	s_vector
 	float		w;
 }				t_vector;
 
+typedef struct	s_image
+{
+	int				width;
+	int				height;
+	unsigned char	*data;
+	GLuint			textureid;
+}				t_image;
+
 typedef struct	s_mesh
 {
 	GLfloat		*vtx;
 	GLfloat		*colors;
+	GLfloat		*uv;
 	int			vertex_count;
 	t_vector	world_position;
 	GLuint		vertexbuffer;
 	GLuint		colorbuffer;
+	GLuint		uvbuffer;
 	t_vector	angle;
 	float		scale;
+	t_image		texture;
 }				t_mesh;
 
 typedef struct	s_camconfig
@@ -101,7 +112,7 @@ double				dot_product(t_vector a, t_vector b);
 t_vector			cross_product(t_vector a, t_vector b);
 t_vector			norm_vector(t_vector a);
 void				create_lookat_matrix(matrix mtx, t_vector eye, t_vector target, t_vector up);
-t_mesh				load_model(char *path);
+t_mesh				load_model(char *path, char *imgpath);
 void				get_coord_index(char **file, int *vstart, int *vlen);
 void				get_vertex_index(char **file, int *vstart, int *vlen, int i);
 int					count_obj_vertex(int vstart, int vlen, char **file);
@@ -111,4 +122,5 @@ void				error(char *msg);
 char				*read_obj(char *path);
 char				**split_obj(char **file);
 void				key_input(t_mesh *mesh);
+t_image				load_bmp(char *path);
 #endif
