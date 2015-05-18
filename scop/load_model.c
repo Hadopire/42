@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 15:44:18 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/15 17:25:08 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/18 17:37:18 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,36 @@ void		generate_uv(t_mesh *mesh)
 	}
 }
 
+float		compute_average(GLfloat *vtx, int size, int i)
+{
+	int		a;
+	float	average;
+
+	a = 0;
+	average = 0;
+	while (a < size)
+	{
+		average += vtx[a + i];
+		a += 3;
+	}
+	return (average / (float)size);
+}
+
+void		center_mesh(t_mesh *mesh)
+{
+	matrix	mtx;
+	float	averagex;
+	float	averagey;
+	float	averagez;
+
+	averagex = compute_average(mesh->vtx, mesh->vertex_count / 3, 0);
+	averagey = compute_average(mesh->vtx, mesh->vertex_count / 3, 1);
+	averagez = compute_average(mesh->vtx, mesh->vertex_count / 3, 2);
+	printf("x %g, y %g, z %g, count %d\n", averagex, averagey, averagez, mesh->vertex_count);
+	create_translation_matrix(init_vector(-averagex, -averagey, -averagez), mtx);
+	transform_model(mesh->vtx, mtx, mesh->vertex_count);
+}
+
 t_mesh		load_model(char *path, char *imgpath)
 {
 	char	*filestr;
@@ -144,6 +174,7 @@ t_mesh		load_model(char *path, char *imgpath)
 	file = split_obj(&filestr);
 	mesh = parse_obj(file);
 	fill_colors(&mesh);
+	center_mesh(&mesh);
 	mesh.world_position = init_vector(0, 0, 0);
 	mesh.angle = init_vector(0, 0, 0);
 	mesh.scale = 1;
@@ -153,7 +184,7 @@ t_mesh		load_model(char *path, char *imgpath)
 	if (imgpath)
 		mesh.texture = load_bmp(imgpath);
 	else
-		ft_putendl("TEXTURE OFF");
+		mesh.texture.data = NULL;
 	if (mesh.texture.data)
 		generate_uv(&mesh);
 	return (mesh);

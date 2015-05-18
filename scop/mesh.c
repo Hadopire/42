@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 17:29:10 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/15 17:35:23 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/18 15:55:02 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,35 @@ void	bind_matrices(t_mvp mvp, t_mesh mesh)
 	glEnableVertexAttribArray(1);
 }
 
-void	draw_mesh(t_mesh mesh, t_mvp mvp)
+void	bindbuffers(t_mesh mesh, int programid_index)
+{
+	if (programid_index == 0)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, mesh.colorbuffer);
+		glBufferData(GL_ARRAY_BUFFER, mesh.vertex_count * sizeof(GLfloat),
+				mesh.colors, GL_STATIC_DRAW);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	}
+	else
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, mesh.uvbuffer);
+		glBufferData(GL_ARRAY_BUFFER, (mesh.vertex_count * (2.f / 3.f) + 1) * sizeof(GLfloat),
+				mesh.uv, GL_STATIC_DRAW);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	}
+
+}
+
+void	draw_mesh(t_mesh mesh, t_mvp mvp, int programid_index)
 {
 	bind_matrices(mvp, mesh);
-	/*glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh.colorbuffer);
-	glBufferData(GL_ARRAY_BUFFER, mesh.vertex_count * sizeof(GLfloat),
-			mesh.colors, GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);*/
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh.uvbuffer);
-	glBufferData(GL_ARRAY_BUFFER, (mesh.vertex_count * (2.f / 3.f) + 1) * sizeof(GLfloat),
-			mesh.uv, GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glEnableVertexAttribArray(0);
+	bindbuffers(mesh, programid_index);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh.vertexbuffer);
 	glBufferData(GL_ARRAY_BUFFER, mesh.vertex_count * sizeof(GLfloat),
 			mesh.vtx, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	if (mesh.texture.data != NULL)
-	{
-		
-	}
 	glDrawArrays(GL_TRIANGLES, 0, mesh.vertex_count);
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

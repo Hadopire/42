@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:27:38 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/15 15:01:26 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/18 16:23:37 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,24 @@ void	dispose(t_sdlattr sdlattr)
 	SDL_Quit();
 }
 
-void	update_screen(GLuint programid, t_mesh *mesh, t_sdlattr *sdlattr, t_mvp *mvp)
+int		bindmatrixglsl(t_mesh mesh, t_mvp *mvp, int pid, GLuint *programid)
+{
+	pid = pid == 1 ? 0 : 1;
+	if (mesh.texture.data == NULL)
+		pid = 0;
+	mvp->modelmtx[0] = glGetUniformLocation(programid[pid], "SCALE");
+	mvp->modelmtx[1] = glGetUniformLocation(programid[pid], "TRANS");
+	mvp->projmtx = glGetUniformLocation(programid[pid], "PROJECTION");
+	mvp->viewmtx = glGetUniformLocation(programid[pid], "VIEW");
+	return (pid);
+}
+
+void	update_screen(GLuint *programid, t_mesh *mesh, t_sdlattr *sdlattr, t_mvp *mvp)
 {
 	int		terminate;
+	int		programid_index;
 
+	programid_index = 0;
 	terminate = 0;
 	while (!terminate)
 	{
@@ -84,17 +98,21 @@ void	update_screen(GLuint programid, t_mesh *mesh, t_sdlattr *sdlattr, t_mvp *mv
 			if (sdlattr->events.key.keysym.sym == 27)
 				terminate = 1;
 		}
+		if (sdlattr->events.type == SDL_KEYUP)
+			if (sdlattr->events.key.keysym.sym == SDLK_SPACE)
+				programid_index = bindmatrixglsl(*mesh, mvp, programid_index, programid);
+		sdlattr->events.type = 0;
 		key_input(mesh);
-		glUseProgram(programid);
+		glUseProgram(programid[programid_index]);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		draw_mesh(*mesh, *mvp);	
+		draw_mesh(*mesh, *mvp, programid_index);	
 		SDL_GL_SwapWindow(sdlattr->win);
 	}
 }
 
 int main(int ac, char **av)
 {
-	GLuint		programid;
+	GLuint		programid[2];
 	t_mesh		mesh;
 	t_sdlattr	sdlattr;
 	t_mvp		mvp;
@@ -103,11 +121,12 @@ int main(int ac, char **av)
 	init_win(&sdlattr);
 	init_opengl();
 	mesh = load_model(av[1], ac > 2 ? av[2] : NULL);
-	programid = loadshader("vertex_shader.vertexshader", "FragmentShader.fragmentshader");
-	mvp.modelmtx[0] = glGetUniformLocation(programid, "SCALE");
-	mvp.modelmtx[1] = glGetUniformLocation(programid, "TRANS");
-	mvp.projmtx = glGetUniformLocation(programid, "PROJECTION");
-	mvp.viewmtx = glGetUniformLocation(programid, "VIEW");
+	programid[0] = loadshader("colorvertexshader.vertexshader", "colorfragmentShader.fragmentshader");
+	programid[1] = loadshader("texturevertexshader.vertexshader", "texturefragmentShader.fragmentshader");
+	mvp.modelmtx[0] = glGetUniformLocation(programid[0], "SCALE");
+	mvp.modelmtx[1] = glGetUniformLocation(programid[0], "TRANS");
+	mvp.projmtx = glGetUniformLocation(programid[0], "PROJECTION");
+	mvp.viewmtx = glGetUniformLocation(programid[0], "VIEW");
 	update_screen(programid, &mesh, &sdlattr, &mvp);
 	dispose(sdlattr);
 	return (0);
