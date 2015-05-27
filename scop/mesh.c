@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/04 17:29:10 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/18 15:55:02 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/27 16:24:54 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ void	bindbuffers(t_mesh mesh, int programid_index)
 		glBufferData(GL_ARRAY_BUFFER, mesh.vertex_count * sizeof(GLfloat),
 				mesh.colors, GL_STATIC_DRAW);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh.nmbuffer);
+		glBufferData(GL_ARRAY_BUFFER, mesh.vertex_count * sizeof(GLfloat),
+				mesh.normals, GL_STATIC_DRAW);
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	}
 	else
 	{
@@ -59,6 +63,7 @@ void	draw_mesh(t_mesh mesh, t_mvp mvp, int programid_index)
 	bind_matrices(mvp, mesh);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(2);
 	bindbuffers(mesh, programid_index);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh.vertexbuffer);
 	glBufferData(GL_ARRAY_BUFFER, mesh.vertex_count * sizeof(GLfloat),
@@ -67,4 +72,5 @@ void	draw_mesh(t_mesh mesh, t_mvp mvp, int programid_index)
 	glDrawArrays(GL_TRIANGLES, 0, mesh.vertex_count);
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
 }

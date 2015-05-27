@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/14 17:31:22 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/15 15:44:14 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/27 11:27:20 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,14 @@ char		**split_obj(char **file)
 double		dot_product(t_vector a, t_vector b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
+}
+
+t_vector	add_vector(t_vector a, t_vector b)
+{
+	t_vector vector;
+
+	vector.x = a.x + b.x;
+	vector.y = a.y + b.y;
+	vector.z = a.z + b.z;
+	return (vector);
 }

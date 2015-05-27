@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:34:06 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/18 15:37:41 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/27 15:42:30 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define SCOP_H
 # include "libft/libft.h"
 //supprimer avant de rendre
-# include "/nfs/zfs-student-2/users/2014/ncharret/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+# include "/nfs/zfs-student-3/users/2014/ncharret/Library/Frameworks/SDL2.framework/Headers/SDL.h"
 //# include <SDL.h>
 # define GL3_PROTOTYPES 1
 # include <opengl/gl3.h>
@@ -50,11 +50,13 @@ typedef struct	s_mesh
 	GLfloat		*vtx;
 	GLfloat		*colors;
 	GLfloat		*uv;
+	GLfloat		*normals;
 	int			vertex_count;
 	t_vector	world_position;
 	GLuint		vertexbuffer;
 	GLuint		colorbuffer;
 	GLuint		uvbuffer;
+	GLuint		nmbuffer;
 	t_vector	angle;
 	float		scale;
 	t_image		texture;
@@ -123,4 +125,5 @@ char				*read_obj(char *path);
 char				**split_obj(char **file);
 void				key_input(t_mesh *mesh);
 t_image				load_bmp(char *path);
+t_vector			add_vector(t_vector a, t_vector b);
 #endif

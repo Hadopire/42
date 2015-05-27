@@ -1,7 +1,26 @@
 #version 410 core
 out vec3 color;
 in vec3 fragmentColor;
+in vec3 position_worldspace;
+in vec3 normal_cameraspace;
+in vec3 eyedirection_cameraspace;
+in vec3 lightdirection_cameraspace;
 uniform sampler2D myTextureSampler; 
 void main(){
-	color = fragmentColor;
+	
+	vec3 lightcolor = vec3(1, 1, 1);
+	float lightpower = 70.0f;
+
+	vec3 materialdiffusecolor = vec3(0.5,0.5,0.5);
+	vec3 ambiantcolor = vec3(0.1,0.1,0.1) * materialdiffusecolor;
+	float distance = length( vec3(0,0,10) - position_worldspace);
+	vec3 n = normalize(normal_cameraspace);
+	vec3 l = normalize(lightdirection_cameraspace);
+	vec3 e = normalize(eyedirection_cameraspace);
+	vec3 r = reflect(-l, n);
+	float costheta = clamp(dot(n,l),0,1);
+	float cosalpha = clamp(dot(e,r),0,1);
+
+	color = ambiantcolor + materialdiffusecolor * lightcolor * lightpower * costheta / (distance*distance)
+		+ materialdiffusecolor * lightcolor * lightpower * pow(cosalpha,3) / (distance*distance);
 }

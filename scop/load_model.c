@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 15:44:18 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/18 17:37:18 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/27 15:44:38 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,9 +159,37 @@ void		center_mesh(t_mesh *mesh)
 	averagex = compute_average(mesh->vtx, mesh->vertex_count / 3, 0);
 	averagey = compute_average(mesh->vtx, mesh->vertex_count / 3, 1);
 	averagez = compute_average(mesh->vtx, mesh->vertex_count / 3, 2);
-	printf("x %g, y %g, z %g, count %d\n", averagex, averagey, averagez, mesh->vertex_count);
 	create_translation_matrix(init_vector(-averagex, -averagey, -averagez), mtx);
 	transform_model(mesh->vtx, mtx, mesh->vertex_count);
+}
+
+static void	fill_normals(t_mesh *mesh)
+{
+	int			i;
+	t_vector	v1;
+	t_vector	v2;
+	t_vector	v3;
+
+	mesh->normals = malloc(sizeof(GLfloat) * mesh->vertex_count);
+	i = 0;
+	while (i < mesh->vertex_count)
+	{
+		v1 = init_vector(mesh->vtx[i], mesh->vtx[i + 1], mesh->vtx[i + 2]);
+		v2 = init_vector(mesh->vtx[i + 3], mesh->vtx[i + 4], mesh->vtx[i + 5]);
+		v3 = init_vector(mesh->vtx[i + 6], mesh->vtx[i + 7], mesh->vtx[i + 8]);
+		v1 = norm_vector(cross_product(sub_vector(v1, v2), sub_vector(v1, v3)));
+		mesh->normals[i] = v1.x;
+		mesh->normals[i + 1] = v1.y;
+		mesh->normals[i + 2] = v1.z;
+		mesh->normals[i + 3] = v1.x;
+		mesh->normals[i + 4] = v1.y;
+		mesh->normals[i + 5] = v1.z;
+		mesh->normals[i + 6] = v1.x;
+		mesh->normals[i + 7] = v1.y;
+		mesh->normals[i + 8] = v1.z;
+		i += 9;
+	//	printf("X : %g, Y : %g, Z : %g\n", v1.x, v1.y, v1.z);
+	}
 }
 
 t_mesh		load_model(char *path, char *imgpath)
@@ -174,6 +202,7 @@ t_mesh		load_model(char *path, char *imgpath)
 	file = split_obj(&filestr);
 	mesh = parse_obj(file);
 	fill_colors(&mesh);
+	fill_normals(&mesh);
 	center_mesh(&mesh);
 	mesh.world_position = init_vector(0, 0, 0);
 	mesh.angle = init_vector(0, 0, 0);
@@ -181,6 +210,7 @@ t_mesh		load_model(char *path, char *imgpath)
 	glGenBuffers(1, &mesh.vertexbuffer);
 	glGenBuffers(1, &mesh.colorbuffer);
 	glGenBuffers(1, &mesh.uvbuffer);
+	glGenBuffers(1, &mesh.nmbuffer);
 	if (imgpath)
 		mesh.texture = load_bmp(imgpath);
 	else

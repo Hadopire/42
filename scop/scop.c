@@ -6,7 +6,7 @@
 /*   By: ncharret <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/28 16:27:38 by ncharret          #+#    #+#             */
-/*   Updated: 2015/05/18 16:23:37 by ncharret         ###   ########.fr       */
+/*   Updated: 2015/05/27 17:34:33 by ncharret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	init_sdl()
 void	init_win(t_sdlattr *sdlattr)
 {
 	sdlattr->win = SDL_CreateWindow("Scop OPENGL 4", SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED, 1366, 768, SDL_WINDOW_SHOWN);
+			SDL_WINDOWPOS_CENTERED, 1366, 768, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	if (sdlattr->win == 0)
 	{
 		printf("Erreur lors de la creation de la fenetre\n");
