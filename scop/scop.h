@@ -14,10 +14,10 @@
 # define SCOP_H
 # include "libft/libft.h"
 //supprimer avant de rendre
-# include "/nfs/zfs-student-2/users/2014/ncharret/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+# include "/home/ncharret/Library/SDL2/include/SDL.h"
 //# include <SDL.h>
 # define GL3_PROTOTYPES 1
-# include <opengl/gl3.h>
+# include <GL/gl.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
