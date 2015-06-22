@@ -1,6 +1,6 @@
 #include "Bureaucrat.hpp"
 #include "Form.hpp"
-
+#include "ShrubberyCreationForm.hpp"
 int main( void ) {
 
     // b essaye de signer f mais il est trop noob pour ca
@@ -30,5 +30,8 @@ int main( void ) {
         
         std::cout << e.what() << std::endl;
     }
+    ShrubberyCreationForm s("test");
+    b.signForm(s);
+    s.execute(b);
     return (0);
 }

@@ -36,7 +36,7 @@ void            Form::beSigned( Bureaucrat const & b) {
     if (this->_signed == true) {
         std::cout << "form already signed" << std::endl;
         return;
-        }
+    }
     if (b.getGrade() > this->_signGrade)
         throw GradeTooLowException("bureaucrat grade too low to sign the form");
     else
@@ -44,7 +44,7 @@ void            Form::beSigned( Bureaucrat const & b) {
 }
 
 std::ostream &  operator<<( std::ostream & out, Form const & rhs ) {
-    
+
     out << "The form " << rhs.getName() << " require grade " << rhs.getSignGrade()
         << " to be signed and grade " << rhs.getExecuteGrade()
         << "to be executed. ";
@@ -53,6 +53,10 @@ std::ostream &  operator<<( std::ostream & out, Form const & rhs ) {
     else
         out << "The form is not signed yet.";
     return out;
+}
+
+void        Form::execute( Bureaucrat const & executor) const {
+    (void) executor;
 }
 
 std::string Form::getName( void ) const { return this->_name; }
