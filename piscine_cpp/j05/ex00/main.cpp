@@ -1,7 +1,8 @@
 #include "Bureaucrat.hpp"
 
-int main( void ) {
+// Premier try en mettant un grade trop bas, deuxieme try en essayant d'incrementer le grade de michel alors qu'il est deja le boss de la vie
 
+int main( void ) {
 
     try
     {

@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+class Form;
+
 class Bureaucrat {
 
     private:
@@ -33,6 +35,8 @@ class Bureaucrat {
         Bureaucrat( Bureaucrat const & src );
         ~Bureaucrat( void );
 
+        void            signForm(Form & );
+    
         Bureaucrat &    operator=( Bureaucrat const & rhs );
 
         std::string getName( void ) const;
