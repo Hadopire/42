@@ -22,6 +22,8 @@ void    set_precision(std::string entry, std::stringstream & ssd, std::stringstr
     int precision = entry.find(".") == std::string::npos ? 1 : entry.size() - entry.find(".") - 1;
     if (entry[entry.size() - 1] == 'f')
         precision--;
+    if (precision == 0)
+        precision++;
     ssf.precision(precision > 7 ? 7 : precision);
     ssd.precision(precision > 15 ? 15 : precision);
 }
@@ -38,7 +40,8 @@ int main(int ac, char **av) {
 
         ssf << std::fixed;
         ssd << std::fixed;
-        if (entry[entry.size() - 1] == 'f' && entry.compare("inf") != 0) { //si float
+        if (entry[entry.size() - 1] == 'f' && entry.compare("inf") != 0 && entry.compare("-inf") != 0 && 
+            entry.compare("+inf") != 0) { //si float
 
             std::cout << "Float type detected" << std::endl;
             set_precision(entry, ssd, ssf);
@@ -62,7 +65,8 @@ int main(int ac, char **av) {
             ssf << f << "f";
             ssd << static_cast<double>(f);
         }
-        else if (entry.find(".") == std::string::npos) { // si int
+        else if (entry.find(".") == std::string::npos && entry.find("inf") == std::string::npos &&
+            entry.find("nan") == std::string::npos && entry.find("NaN") == std::string::npos) { // si int
 
             std::cout << "Int type detected" << std::endl;
             ssf.precision(1);
